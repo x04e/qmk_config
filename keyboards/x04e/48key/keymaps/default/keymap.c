@@ -17,7 +17,8 @@ enum layers { QWERTY, LOWER, RAISE, ADJUST };
 /* --- Row 3 --- */
 /* --- Row 4 --- */
 #define LWR       LT(LOWER, _SPC)
-#define RSE       OSL(RAISE)
+#define RSE       LT(0, _0)
+#define SFT_OS    LT(0, _SFT)
 #define ADJ       MO(ADJUST)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -67,6 +68,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+// OneShot timer
+static uint16_t oneshot_timer;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     #ifdef CONSOLE_ENABLE
         uprintf("0x%04X,%u,%u,%u,%b,0x%02X,0x%02X,%u\n",
@@ -81,8 +85,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
          );
     #endif
 
+    // Time out OneShot mods
+    if(timer_elapsed(oneshot_timer) > 1500){
+        clear_oneshot_mods();
+    }
+
     switch(keycode) {
         // Custom keycodes
+        case SFT_OS: return oneshot_tap(record, _SFT, _SFT);
+        case RSE: return oneshot_tap_hold_layer(record, KC_LSFT, RAISE);
     }
     return true;
 }

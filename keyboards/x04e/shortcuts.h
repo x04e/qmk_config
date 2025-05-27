@@ -199,3 +199,36 @@ bool tap_hold(keyrecord_t *record, uint16_t tap_keycode, uint16_t hold_keycode){
     return false;
 }
 
+static uint16_t oneshot_timer;
+
+bool oneshot_tap(keyrecord_t *record, uint16_t mod, uint16_t kc){
+    if(is_held(record)){
+        if(is_pressed(record)){
+            register_code16(kc);
+        } else {
+            unregister_code16(kc);
+        }
+    } else {
+        if(is_pressed(record)){
+            oneshot_timer = timer_read32();
+            set_oneshot_mods(MOD_BIT(mod));
+        }
+    }
+    return false;
+}
+
+bool oneshot_tap_hold_layer(keyrecord_t *record, uint16_t mod, uint16_t layer){
+    if(is_held(record)){
+        if(is_pressed(record)){
+            layer_on(layer);
+        } else {
+            layer_off(layer);
+        }
+    } else {
+        if(is_pressed(record)){
+            oneshot_timer = timer_read32();
+            set_oneshot_mods(MOD_BIT(mod));
+        }
+    }
+    return false;
+}
