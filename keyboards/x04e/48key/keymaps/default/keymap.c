@@ -8,13 +8,16 @@ enum layers { QWERTY, LOWER, RAISE, ADJUST };
 #define _Q_M      LGUI_T(_Q)
 #define _P_M      LGUI_T(_P)
 /* --- Row 2 --- */
+#define _ESC_M    LCTL_T(_ESC)
 #define _A_M      LALT_T(_A)
 #define _S_M      LCTL_T(_S)
 #define _D_M      LSFT_T(_D)
 #define _K_M      LSFT_T(_K)
 #define _L_M      LCTL_T(_L)
 #define _SCN_M    LALT_T(_SCN)
+#define _ENT_M    LCTL_T(_ENT)
 /* --- Row 3 --- */
+#define _DEL_M    LSFT_T(_DEL)
 /* --- Row 4 --- */
 #define LWR       LT(LOWER, _SPC)
 #define RSE       LT(0, _0)
@@ -26,8 +29,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [QWERTY] = LAYOUT( \
      /* ─────── ─────── ─────── ─────── ─────── ───────|─────── ─────── ─────── ─────── ─────── ─────── */
         _TAB,   _Q_M,   _W,     _E,     _R,     _T,     _Y,     _U,     _I,     _O,     _P_M,   _BSPC,  \
-        _ESC,   _A_M,   _S_M,   _D_M,   _F,     _G,     _H,     _J,     _K_M,   _L_M,   _SCN_M, _ENT,   \
-        _SFT,   _Z,     _X,     _C,     _V,     _B,     _N,     _M,     _COM,   _DOT,   _SL,    _DEL,   \
+        _ESC_M, _A_M,   _S_M,   _D_M,   _F,     _G,     _H,     _J,     _K_M,   _L_M,   _SCN_M, _ENT_M, \
+        SFT_OS, _Z,     _X,     _C,     _V,     _B,     _N,     _M,     _COM,   _DOT,   _SL,    _DEL_M, \
         xxx,    xxx,    xxx,    xxx,    xxx,    LWR,   RSE,    xxx,     xxx,    xxx,    xxx,    xxx     \
     ),
 
@@ -73,9 +76,9 @@ static uint16_t oneshot_timer;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     #ifdef CONSOLE_ENABLE
-        uprintf("0x%04X,%u,%u,%u,%b,0x%02X,0x%02X,%u\n",
-             keycode,
-             record->event.key.row,
+    uprintf("0x%04X,%u,%u,%u,%b,0x%02X,0x%02X,%u\n",
+        keycode,
+        record->event.key.row,
              record->event.key.col,
              get_highest_layer(layer_state),
              record->event.pressed,
