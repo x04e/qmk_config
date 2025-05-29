@@ -17,11 +17,11 @@ enum layers { QWERTY, LOWER, RAISE, ADJUST };
 #define _SCN_M    LALT_T(_SCN)
 #define _ENT_M    LCTL_T(_ENT)
 /* --- Row 3 --- */
+#define _SFT_M    LT(0, _SFT)
 #define _DEL_M    LSFT_T(_DEL)
 /* --- Row 4 --- */
 #define LWR       LT(LOWER, _SPC)
 #define RSE       LT(0, _0)
-#define SFT_OS    LT(0, _SFT)
 #define ADJ       MO(ADJUST)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -29,8 +29,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [QWERTY] = LAYOUT( \
      /* ─────── ─────── ─────── ─────── ─────── ───────|─────── ─────── ─────── ─────── ─────── ─────── */
         _TAB,   _Q_M,   _W,     _E,     _R,     _T,     _Y,     _U,     _I,     _O,     _P_M,   _BSPC,  \
-        _ESC_M, _A_M,   _S_M,   _D_M,   _F,     _G,     _H,     _J,     _K_M,   _L_M,   _SCN_M, _ENT_M, \
-        SFT_OS, _Z,     _X,     _C,     _V,     _B,     _N,     _M,     _COM,   _DOT,   _SL,    _DEL_M, \
+        _ESC_M, _A_M,   _S_M,   _D_M,   _F,     _G,     _H,     _J,     _K_M,   _L_M,   _SCN_M, _ENT,   \
+        _SFT_M, _Z,     _X,     _C,     _V,     _B,     _N,     _M,     _COM,   _DOT,   _SL,    _DEL,   \
         xxx,    xxx,    xxx,    xxx,    xxx,    LWR,   RSE,    xxx,     xxx,    xxx,    xxx,    xxx     \
     ),
 
@@ -89,14 +89,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     #endif
 
     // Time out OneShot mods
-    if(timer_elapsed(oneshot_timer) > 1500){
+    if(timer_elapsed(oneshot_timer) > 2000){
         clear_oneshot_mods();
     }
 
     switch(keycode) {
         // Custom keycodes
-        case SFT_OS: return oneshot_tap(record, _SFT, _SFT);
-        case RSE: return oneshot_tap_hold_layer(record, KC_LSFT, RAISE);
+        case _SFT_M: return oneshot_tap(record, _SFT, _SFT);
+        case RSE:    return oneshot_tap_hold_layer(record, _SFT, RAISE);
     }
     return true;
 }
