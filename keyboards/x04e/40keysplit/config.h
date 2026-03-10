@@ -6,8 +6,8 @@
 #include "config_common.h"
 
 /* USB Device descriptor parameter */
-#define VENDOR_ID    0x04E0
-#define PRODUCT_ID   0x0000
+#define VENDOR_ID    0xFEED
+#define PRODUCT_ID   0x04E0
 #define DEVICE_VER   0x0001
 #define MANUFACTURER x04e
 #define PRODUCT      x04e 40-Key Split Keyboard
