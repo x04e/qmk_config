@@ -5,6 +5,9 @@ cp -r keyboards/x04e qmk_firmware/keyboards/
 
 cd qmk_firmware
 
+git submodule init
+git submodule update
+
 if ! echo 3 | qmk setup -y; then
     echo "Failed to setup QMK!"
     exit 1
