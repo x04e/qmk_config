@@ -6,7 +6,7 @@
 #define ___        KC_TRNS
 #define TRNS       KC_TRNS
 #define xxx        KC_NO
-
+#define RESET      QK_BOOTLOADER
 
 // Control keys
 #define _ESC        KC_ESCAPE
